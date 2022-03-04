@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/notes_screen.dart';
 
 class CreateNote extends StatefulWidget {
   @override
@@ -7,20 +6,31 @@ class CreateNote extends StatefulWidget {
 }
 
 class _CreateNoteState extends State<CreateNote> {
-  TextEditingController myController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
 
-  bool containsText = false ;
+  bool containsText = false;
 
   @override
   void initState() {
     super.initState();
-    myController.addListener(() {
-      if(myController.text.isEmpty){
+    titleController.addListener(() {
+      if (titleController.text.isEmpty) {
         setState(() {
           containsText = false;
         });
+      } else {
+        setState(() {
+          containsText = true;
+        });
       }
-      else{
+    });
+    noteController.addListener(() {
+      if (noteController.text.isEmpty) {
+        setState(() {
+          containsText = false;
+        });
+      } else {
         setState(() {
           containsText = true;
         });
@@ -36,13 +46,12 @@ class _CreateNoteState extends State<CreateNote> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Row(
                   children: [
                     IconButton(
                       onPressed: () {
-                        Navigator.pop(context,
-                            MaterialPageRoute(builder: (context) => Home()));
+                        Navigator.of(context).pop();
                       },
                       icon: Icon(
                         Icons.arrow_back,
@@ -72,7 +81,7 @@ class _CreateNoteState extends State<CreateNote> {
                 child: Column(
                   children: <Widget>[
                     TextField(
-                      controller: myController,
+                      controller: titleController,
                       keyboardType: TextInputType.multiline,
                       maxLines: 1,
                       decoration: InputDecoration(
@@ -85,6 +94,7 @@ class _CreateNoteState extends State<CreateNote> {
                           )),
                     ),
                     TextField(
+                      controller: noteController,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       decoration: InputDecoration(
