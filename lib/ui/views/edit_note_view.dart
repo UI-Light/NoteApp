@@ -3,34 +3,44 @@ import 'package:note_app/data/database_service.dart';
 import 'package:note_app/models/note.dart';
 import 'package:intl/intl.dart';
 
-class CreateNote extends StatefulWidget {
+class EditNote extends StatefulWidget {
+  final Note note;
+  EditNote({required this.note});
   @override
-  _CreateNoteState createState() => _CreateNoteState();
+  _EditNoteState createState() => _EditNoteState();
 }
 
-class _CreateNoteState extends State<CreateNote> {
-  TextEditingController titleController = TextEditingController();
-  TextEditingController noteController = TextEditingController();
+class _EditNoteState extends State<EditNote> {
+  late TextEditingController titleController;
+  late TextEditingController noteController;
 
   bool containsText = false;
   //DateFormat formattedDate =DateFormat.yMMMMd().add_Hm();
 
-  void insertNote() async {
+  void editNote() async {
     DataBaseService dataBaseService = DataBaseService();
-    await dataBaseService.insertNote(
+    await dataBaseService.updateNote(
       Note(
         title: titleController.text,
         body: noteController.text,
         date: DateTime.now(),
-        id: DateTime.now().toIso8601String(),
+        id: widget.note.id,
       ),
     );
+    Navigator.of(context).pop();
+  }
+
+  void deleteNote() async {
+    DataBaseService dataBaseService = DataBaseService();
+    await dataBaseService.deleteNote(widget.note.id);
     Navigator.of(context).pop();
   }
 
   @override
   void initState() {
     super.initState();
+    titleController = TextEditingController(text: widget.note.title);
+    noteController = TextEditingController(text: widget.note.body);
     titleController.addListener(() {
       if (titleController.text.isEmpty) {
         setState(() {
@@ -88,7 +98,7 @@ class _CreateNoteState extends State<CreateNote> {
                     if (containsText)
                       GestureDetector(
                         onTap: () {
-                          insertNote();
+                          editNote();
                         },
                         child: Icon(
                           Icons.check,
@@ -108,7 +118,7 @@ class _CreateNoteState extends State<CreateNote> {
                       keyboardType: TextInputType.multiline,
                       maxLines: 1,
                       decoration: InputDecoration(
-                          hintText: 'Title',
+                          hintText: "Title",
                           border: InputBorder.none,
                           hintStyle: TextStyle(
                             color: Colors.grey[400],
@@ -122,7 +132,7 @@ class _CreateNoteState extends State<CreateNote> {
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       decoration: InputDecoration(
-                        hintText: 'Note something down',
+                        hintText: "Note Something Down",
                         border: InputBorder.none,
                         hintStyle: TextStyle(
                           color: Colors.grey[400],
@@ -136,6 +146,15 @@ class _CreateNoteState extends State<CreateNote> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          deleteNote();
+        },
+        child: Icon(
+          Icons.delete,
+        ),
+        backgroundColor: Colors.green,
       ),
     );
   }

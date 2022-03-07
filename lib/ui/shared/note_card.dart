@@ -26,6 +26,7 @@ class NoteCard extends StatelessWidget {
             const SizedBox(height: 5),
             Text(
               note.body,
+              maxLines: 1,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[700],

@@ -15,17 +15,19 @@ class DataBaseService {
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
       await db.execute(
-          'CREATE TABLE IF NOT EXISTS $noteTable (title TEXT, body TEXT, date TEXT PRIMARY KEY)');
+          'CREATE TABLE IF NOT EXISTS $noteTable (title TEXT, body TEXT, date TEXT, id TEXT PRIMARY KEY)');
     });
     return database;
   }
+  //Now to perform CRUD operations
 
   Future<void> insertNote(Note note) async {
     Database database = await createNoteTable();
     await database.insert(noteTable, {
       "title": note.title,
       "body": note.body,
-      "date": note.date.toIso8601String()
+      "date": note.date.toIso8601String(),
+      "id": note.id,
     });
   }
 
@@ -46,12 +48,12 @@ class DataBaseService {
       "title": note.title,
       "body": note.body,
       "date": note.date.toIso8601String(),
+      "id": note.id,
     });
   }
 
-  Future<void> deleteNote(Note note) async {
+  Future<void> deleteNote(String id) async {
     Database database = await createNoteTable();
-    await database.delete(noteTable,
-        where: "date", whereArgs: [note.date.toIso8601String()]);
+    await database.delete(noteTable, where: "id = ?", whereArgs: [id]);
   }
 }

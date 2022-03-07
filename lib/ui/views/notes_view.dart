@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/data/database_service.dart';
 import 'package:note_app/models/note.dart';
 import 'package:note_app/ui/shared/note_card.dart';
+import 'package:note_app/ui/views/edit_note_view.dart';
 import 'package:note_app/ui/views/new_note_view.dart';
 
 class NoteView extends StatefulWidget {
@@ -9,6 +11,22 @@ class NoteView extends StatefulWidget {
 }
 
 class _NoteViewState extends State<NoteView> {
+  List<Note> notes = [];
+
+  void fetchNotes() async {
+    DataBaseService dataBaseService = DataBaseService();
+    notes = await dataBaseService.fetchNotes();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchNotes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,53 +64,24 @@ class _NoteViewState extends State<NoteView> {
                 ),
                 SizedBox(height: 20),
                 Expanded(
-                  child: Container(
-                      child: ListView(
-                    children: [
-                      NoteCard(
-                        note: Note(
-                          title: 'Shopping List',
-                          body: 'Yeast',
-                          date: DateTime.now(),
-                        ),
+                  child: ListView.builder(
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () async {
+                        await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EditNote(
+                              note: notes[index],
+                            ),
+                          ),
+                        );
+                        fetchNotes();
+                      },
+                      child: NoteCard(
+                        note: notes[index],
                       ),
-                      NoteCard(
-                        note: Note(
-                          title: 'Books to read',
-                          body: 'Divergent',
-                          date: DateTime.now(),
-                        ),
-                      ),
-                      NoteCard(
-                        note: Note(
-                          title: 'Log notes',
-                          body: 'yada yada yada',
-                          date: DateTime.now(),
-                        ),
-                      ),
-                      NoteCard(
-                        note: Note(
-                          title: 'Log notes',
-                          body: 'yada yada yada',
-                          date: DateTime.now(),
-                        ),
-                      ),
-                      NoteCard(
-                        note: Note(
-                          title: 'Log notes',
-                          body: 'yada yada yada',
-                          date: DateTime.now(),
-                        ),
-                      ),
-                      NoteCard(
-                        note: Note(
-                          title: 'Log notes',
-                          body: 'yada yada yada',
-                          date: DateTime.now(),
-                        ),
-                      ),
-                    ],
-                  )),
+                    ),
+                    itemCount: notes.length,
+                  ),
                 ),
               ],
             ),
@@ -100,9 +89,10 @@ class _NoteViewState extends State<NoteView> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
               context, MaterialPageRoute(builder: (context) => CreateNote()));
+          fetchNotes();
         },
         child: Icon(
           Icons.add,
@@ -112,21 +102,3 @@ class _NoteViewState extends State<NoteView> {
     );
   }
 }
-               
-// Center(
-//                       child: Icon(
-//                         Icons.note,
-//                         size: 50,
-//                         color: Colors.grey[700],
-//                       ),
-//                     ),
-// SizedBox(height: 40),
-//                 Center(
-//                   child: Text(
-//                     'Click + to create new notes',
-//                     style: TextStyle(
-//                       fontSize: 10.0,
-//                       color: Colors.grey[500],
-//                     ),
-//                   ),
-//                 ),
