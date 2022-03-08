@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/models/todo.dart';
+import 'package:note_app/ui/shared/todo_bottom_sheet.dart';
 import 'package:note_app/ui/shared/todo_card.dart';
-import 'package:note_app/ui/views/new_todo_view.dart';
+import 'package:note_app/data/database_service.dart';
 
 class TodoView extends StatefulWidget {
   @override
@@ -8,6 +10,29 @@ class TodoView extends StatefulWidget {
 }
 
 class _TodoViewState extends State<TodoView> {
+  List<Todo> todos = [];
+
+  void todoBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return TodoBottomSheet();
+        });
+  }
+
+  void fetchTodos() async {
+    DataBaseService dataBaseService = DataBaseService();
+    todos = await dataBaseService.fetchTodos();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    fetchTodos();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,15 +70,11 @@ class _TodoViewState extends State<TodoView> {
                 ),
                 SizedBox(height: 20),
                 Expanded(
-                  child: Container(
-                    child: ListView(
-                      children: [
-                        TodoCard(),
-                        TodoCard(),
-                        TodoCard(),
-                        TodoCard(),
-                      ],
+                  child: ListView.builder(
+                    itemBuilder: (context, index) => TodoCard(
+                      todo: todos[index],
                     ),
+                    itemCount: todos.length,
                   ),
                 ),
               ],
@@ -63,8 +84,7 @@ class _TodoViewState extends State<TodoView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CreateTodo()));
+          todoBottomSheet(context);
         },
         child: Icon(
           Icons.add,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/models/todo.dart';
+import 'package:note_app/utils/date_util.dart';
 
 class TodoCard extends StatefulWidget {
-  const TodoCard({Key? key}) : super(key: key);
+  final Todo todo;
+  const TodoCard({Key? key, required this.todo}) : super(key: key);
 
   @override
   State<TodoCard> createState() => _TodoCardState();
@@ -27,12 +30,12 @@ class _TodoCardState extends State<TodoCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Remind bro uche to buy tapes',
+                  widget.todo.event,
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'February 19, 2022 01:00 PM',
+                  DateUtil.formatDate(widget.todo.date),
                   style: TextStyle(color: Colors.grey, fontSize: 12),
                 )
               ],

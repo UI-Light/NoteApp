@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/data/database_service.dart';
 import 'package:note_app/models/note.dart';
-import 'package:intl/intl.dart';
 
 class CreateNote extends StatefulWidget {
   @override
@@ -13,8 +12,6 @@ class _CreateNoteState extends State<CreateNote> {
   TextEditingController noteController = TextEditingController();
 
   bool containsText = false;
-  //DateFormat formattedDate =DateFormat.yMMMMd().add_Hm();
-
   void insertNote() async {
     DataBaseService dataBaseService = DataBaseService();
     await dataBaseService.insertNote(

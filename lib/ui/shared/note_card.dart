@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/models/note.dart';
+import 'package:note_app/utils/date_util.dart';
 
 class NoteCard extends StatelessWidget {
   final Note note;
@@ -34,7 +35,7 @@ class NoteCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              '${note.date}',
+              DateUtil.formatDate(note.date),
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.grey,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/data/database_service.dart';
 import 'package:note_app/models/note.dart';
-import 'package:intl/intl.dart';
 
 class EditNote extends StatefulWidget {
   final Note note;
@@ -15,7 +14,7 @@ class _EditNoteState extends State<EditNote> {
   late TextEditingController noteController;
 
   bool containsText = false;
-  //DateFormat formattedDate =DateFormat.yMMMMd().add_Hm();
+  
 
   void editNote() async {
     DataBaseService dataBaseService = DataBaseService();
