@@ -84,4 +84,13 @@ class DataBaseService {
     }
     return convertedTodos.reversed.toList();
   }
+
+  Future<void> updateTodo(Todo todo) async {
+    Database database = await createDatabase();
+    await database.update(todoTable, {
+      "event": todo.event,
+      "date": todo.date.toIso8601String(),
+      "id": todo.id,
+    });
+  }
 }

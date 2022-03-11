@@ -2,30 +2,34 @@ import "package:flutter/material.dart";
 import 'package:note_app/data/database_service.dart';
 import 'package:note_app/models/todo.dart';
 
-class TodoBottomSheet extends StatefulWidget {
-  const TodoBottomSheet({Key? key}) : super(key: key);
+class EditBottomSheet extends StatefulWidget {
+  final Todo todo;
+  const EditBottomSheet({Key? key, required this.todo}) : super(key: key);
 
   @override
-  State<TodoBottomSheet> createState() => _TodoBottomSheetState();
+  State<EditBottomSheet> createState() => _EditBottomSheetState();
 }
 
-class _TodoBottomSheetState extends State<TodoBottomSheet> {
-  TextEditingController addEventController = TextEditingController();
-  bool containsText = false;
+class _EditBottomSheetState extends State<EditBottomSheet> {
+  late TextEditingController addEventController;
+  bool containsText = true;
 
-  void saveEvent() async {
+  void editTodo() async {
     DataBaseService dataBaseService = DataBaseService();
-    await dataBaseService.insertTodo(Todo(
-      event: addEventController.text,
-      date: DateTime.now(),
-      id: DateTime.now().toIso8601String(),
-    ));
+    await dataBaseService.updateTodo(
+      Todo(
+        event: addEventController.text,
+        date: DateTime.now(),
+        id: widget.todo.id,
+      ),
+    );
     Navigator.of(context).pop();
   }
 
   @override
   void initState() {
     super.initState();
+    addEventController = TextEditingController(text: widget.todo.event);
     addEventController.addListener(() {
       if (addEventController.text.isEmpty) {
         setState(() {
@@ -107,7 +111,7 @@ class _TodoBottomSheetState extends State<TodoBottomSheet> {
                     ),
                     TextButton(
                       onPressed: () {
-                        saveEvent();
+                        editTodo();
                       },
                       child: Text(
                         'SAVE',

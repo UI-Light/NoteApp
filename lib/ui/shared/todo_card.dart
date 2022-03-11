@@ -11,6 +11,8 @@ class TodoCard extends StatefulWidget {
 }
 
 class _TodoCardState extends State<TodoCard> {
+  bool isTapped = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +26,16 @@ class _TodoCardState extends State<TodoCard> {
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-            Icon(Icons.check_circle),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  isTapped = !isTapped;
+                });
+              },
+              icon: isTapped
+                  ? Icon(Icons.check_circle)
+                  : Icon(Icons.circle_outlined),
+            ),
             SizedBox(width: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

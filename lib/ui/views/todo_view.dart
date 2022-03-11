@@ -3,6 +3,7 @@ import 'package:note_app/models/todo.dart';
 import 'package:note_app/ui/shared/todo_bottom_sheet.dart';
 import 'package:note_app/ui/shared/todo_card.dart';
 import 'package:note_app/data/database_service.dart';
+import 'package:note_app/ui/shared/edit_bottom_sheet.dart';
 
 class TodoView extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _TodoViewState extends State<TodoView> {
 
   void todoBottomSheet(context) {
     showModalBottomSheet(
+        backgroundColor: Colors.transparent,
         context: context,
         builder: (context) {
           return TodoBottomSheet();
@@ -71,8 +73,21 @@ class _TodoViewState extends State<TodoView> {
                 SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
-                    itemBuilder: (context, index) => TodoCard(
-                      todo: todos[index],
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () async {
+                        await showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) {
+                              return EditBottomSheet(
+                                todo: todos[index],
+                              );
+                            });
+                        fetchTodos();
+                      },
+                      child: TodoCard(
+                        todo: todos[index],
+                      ),
                     ),
                     itemCount: todos.length,
                   ),
