@@ -38,7 +38,7 @@ class _SearchBarState extends State<SearchBar> {
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       child: TextField(
-        onChanged: (value) => filterSearch(query),
+        onChanged: (value) => filterSearch,
         controller: searchController,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.search),
