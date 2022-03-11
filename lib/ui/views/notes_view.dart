@@ -4,6 +4,7 @@ import 'package:note_app/models/note.dart';
 import 'package:note_app/ui/shared/note_card.dart';
 import 'package:note_app/ui/views/edit_note_view.dart';
 import 'package:note_app/ui/views/new_note_view.dart';
+import 'package:note_app/ui/shared/search_bar.dart';
 
 class NoteView extends StatefulWidget {
   @override
@@ -13,17 +14,17 @@ class NoteView extends StatefulWidget {
 class _NoteViewState extends State<NoteView> {
   List<Note> notes = [];
 
+  Widget searchBar() => SearchBar();
+
   void fetchNotes() async {
     DataBaseService dataBaseService = DataBaseService();
     notes = await dataBaseService.fetchNotes();
-
     setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-
     fetchNotes();
   }
 
@@ -47,21 +48,7 @@ class _NoteViewState extends State<NoteView> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  height: 40,
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: const TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      hintText: 'Search notes',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
+                searchBar(),
                 SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
