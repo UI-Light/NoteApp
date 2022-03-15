@@ -65,100 +65,101 @@ class _EditNoteState extends State<EditNote> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Container(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Colors.green,
-                        size: 30,
-                      ),
-                    ),
-                    Text(
-                      "Notes",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Spacer(),
-                    if (containsText)
-                      GestureDetector(
-                        onTap: () {
-                          editNote();
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
                         },
-                        child: Icon(
-                          Icons.check,
+                        icon: Icon(
+                          Icons.arrow_back,
                           color: Colors.green,
+                          size: 30,
                         ),
                       ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(21, 16.0, 8.0, 0.0),
-                  child: Column(
-                    children: <Widget>[
-                      TextField(
-                        textCapitalization: TextCapitalization.sentences,
-                        controller: titleController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 1,
-                        decoration: InputDecoration(
-                            hintText: "Title",
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                              color: Colors.grey[400],
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
-                            )),
+                      Text(
+                        "Notes",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                      TextField(
-                        textCapitalization: TextCapitalization.sentences,
-                        controller: noteController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          hintText: "Note Something Down",
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 20,
+                      Spacer(),
+                      if (containsText)
+                        GestureDetector(
+                          onTap: () {
+                            editNote();
+                          },
+                          child: Icon(
+                            Icons.check,
+                            color: Colors.green,
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).viewInsets.bottom,
-                      ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(21, 16.0, 8.0, 0.0),
+                    child: Column(
+                      children: <Widget>[
+                        TextField(
+                          textCapitalization: TextCapitalization.sentences,
+                          controller: titleController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                              hintText: "Title",
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 25,
+                                fontWeight: FontWeight.w500,
+                              )),
+                        ),
+                        TextField(
+                          textCapitalization: TextCapitalization.sentences,
+                          controller: noteController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: "Note Something Down",
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          deleteNote();
-        },
-        child: Icon(
-          Icons.delete,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            deleteNote();
+          },
+          child: Icon(
+            Icons.delete,
+          ),
+          backgroundColor: Colors.green,
         ),
-        backgroundColor: Colors.green,
       ),
     );
   }
