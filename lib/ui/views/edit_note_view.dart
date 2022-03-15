@@ -14,7 +14,6 @@ class _EditNoteState extends State<EditNote> {
   late TextEditingController noteController;
 
   bool containsText = false;
-  
 
   void editNote() async {
     DataBaseService dataBaseService = DataBaseService();
@@ -67,6 +66,7 @@ class _EditNoteState extends State<EditNote> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           child: Column(
@@ -107,39 +107,44 @@ class _EditNoteState extends State<EditNote> {
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(21, 16.0, 8.0, 0.0),
-                child: Column(
-                  children: <Widget>[
-                    TextField(
-                      textCapitalization: TextCapitalization.sentences,
-                      controller: titleController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                          hintText: "Title",
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(21, 16.0, 8.0, 0.0),
+                  child: Column(
+                    children: <Widget>[
+                      TextField(
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: titleController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 1,
+                        decoration: InputDecoration(
+                            hintText: "Title",
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
+                            )),
+                      ),
+                      TextField(
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: noteController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          hintText: "Note Something Down",
                           border: InputBorder.none,
                           hintStyle: TextStyle(
                             color: Colors.grey[400],
-                            fontSize: 25,
-                            fontWeight: FontWeight.w500,
-                          )),
-                    ),
-                    TextField(
-                      textCapitalization: TextCapitalization.sentences,
-                      controller: noteController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        hintText: "Note Something Down",
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(
-                          color: Colors.grey[400],
-                          fontSize: 20,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

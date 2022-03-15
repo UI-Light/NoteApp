@@ -95,39 +95,43 @@ class _CreateNoteState extends State<CreateNote> {
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(21, 16.0, 8.0, 0.0),
-                child: Column(
-                  children: <Widget>[
-                    TextField(
-                      textCapitalization: TextCapitalization.sentences,
-                      controller: titleController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                          hintText: 'Title',
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 25,
-                            fontWeight: FontWeight.w500,
-                          )),
-                    ),
-                    TextField(
-                      textCapitalization: TextCapitalization.sentences,
-                      controller: noteController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        hintText: 'Note something down',
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(
-                          color: Colors.grey[400],
-                          fontSize: 20,
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(21, 16.0, 8.0, 0.0),
+                  child: Column(
+                    children: <Widget>[
+                      TextField(
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: titleController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 1,
+                        decoration: InputDecoration(
+                            hintText: 'Title',
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
+                            )),
+                      ),
+                      Expanded(
+                        child: TextField(
+                          textCapitalization: TextCapitalization.sentences,
+                          controller: noteController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: 'Note something down',
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/models/todo.dart';
+import 'package:note_app/ui/shared/search_bar.dart';
 import 'package:note_app/ui/shared/todo_bottom_sheet.dart';
 import 'package:note_app/ui/shared/todo_card.dart';
 import 'package:note_app/data/database_service.dart';
@@ -12,6 +13,8 @@ class TodoView extends StatefulWidget {
 
 class _TodoViewState extends State<TodoView> {
   List<Todo> todos = [];
+  List<Todo> unfilteredTodos = [];
+  TextEditingController searchTodoController = TextEditingController();
 
   void todoBottomSheet(context) {
     showModalBottomSheet(
@@ -33,6 +36,13 @@ class _TodoViewState extends State<TodoView> {
   void initState() {
     fetchTodos();
     super.initState();
+    searchTodoController.addListener(() {
+      if (searchTodoController.text.isEmpty) {
+        setState(() {
+          fetchTodos();
+        });
+      } else {}
+    });
   }
 
   @override
@@ -55,21 +65,9 @@ class _TodoViewState extends State<TodoView> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  height: 40,
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: const TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      hintText: 'Search to-dos',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
+                SearchBar(
+                    controller: searchTodoController,
+                    hintText: 'Search to-dos'),
                 SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
@@ -107,5 +105,16 @@ class _TodoViewState extends State<TodoView> {
         backgroundColor: Colors.green,
       ),
     );
+  }
+
+  void filterTodo(String keyword) {
+    final searchTodos = unfilteredTodos.where((todo) {
+      final containsEvent =
+          todo.event.toLowerCase().contains(keyword.toLowerCase());
+      return containsEvent;
+    }).toList();
+    setState(() {
+      todos = searchTodos;
+    });
   }
 }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:note_app/data/database_service.dart';
 import 'package:note_app/models/note.dart';
 import 'package:note_app/ui/shared/note_card.dart';
+import 'package:note_app/ui/shared/search_bar.dart';
 import 'package:note_app/ui/views/edit_note_view.dart';
 import 'package:note_app/ui/views/new_note_view.dart';
-import 'package:note_app/ui/shared/search_bar.dart';
 
 class NoteView extends StatefulWidget {
   @override
@@ -13,19 +13,29 @@ class NoteView extends StatefulWidget {
 
 class _NoteViewState extends State<NoteView> {
   List<Note> notes = [];
+  List<Note> unfilteredNotes = [];
 
-  Widget searchBar() => SearchBar();
+  TextEditingController searchNoteController = TextEditingController();
 
   void fetchNotes() async {
     DataBaseService dataBaseService = DataBaseService();
-    notes = await dataBaseService.fetchNotes();
+    unfilteredNotes = notes = await dataBaseService.fetchNotes();
     setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    fetchNotes();
+    searchNoteController.addListener(() {
+      if (searchNoteController.text.isEmpty) {
+        setState(() {
+          notes = unfilteredNotes;
+        });
+      } else {
+        filterNotes(searchNoteController.text);
+      }
+    });
+    Future.microtask(() => fetchNotes());
   }
 
   @override
@@ -48,7 +58,8 @@ class _NoteViewState extends State<NoteView> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                searchBar(),
+                SearchBar(
+                    controller: searchNoteController, hintText: 'Search Notes'),
                 SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
@@ -87,5 +98,18 @@ class _NoteViewState extends State<NoteView> {
         backgroundColor: Colors.green,
       ),
     );
+  }
+
+  void filterNotes(String keyword) {
+    final searchNotes = unfilteredNotes.where((note) {
+      final containsTitle =
+          note.title.toLowerCase().contains(keyword.toLowerCase());
+      final containsBody =
+          note.body.toLowerCase().contains(keyword.toLowerCase());
+      return containsTitle || containsBody;
+    }).toList();
+    setState(() {
+      notes = searchNotes;
+    });
   }
 }
