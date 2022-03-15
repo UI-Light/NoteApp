@@ -67,83 +67,75 @@ class _EditNoteState extends State<EditNote> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0,
+          title: Text(
+            "Notes",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.green,
+              size: 30,
+            ),
+          ),
+          actions: [
+            if (containsText)
+              GestureDetector(
+                onTap: () {
+                  editNote();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ),
+                ),
+              ),
+          ],
+        ),
         body: SingleChildScrollView(
           child: Container(
+            padding: EdgeInsets.fromLTRB(21, 16.0, 21.0, 0.0),
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.green,
-                          size: 30,
-                        ),
-                      ),
-                      Text(
-                        "Notes",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Spacer(),
-                      if (containsText)
-                        GestureDetector(
-                          onTap: () {
-                            editNote();
-                          },
-                          child: Icon(
-                            Icons.check,
-                            color: Colors.green,
-                          ),
-                        ),
-                    ],
-                  ),
+                TextField(
+                  textCapitalization: TextCapitalization.sentences,
+                  controller: titleController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                      hintText: "Title",
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 25,
+                        fontWeight: FontWeight.w500,
+                      )),
                 ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(21, 16.0, 8.0, 0.0),
-                    child: Column(
-                      children: <Widget>[
-                        TextField(
-                          textCapitalization: TextCapitalization.sentences,
-                          controller: titleController,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 1,
-                          decoration: InputDecoration(
-                              hintText: "Title",
-                              border: InputBorder.none,
-                              hintStyle: TextStyle(
-                                color: Colors.grey[400],
-                                fontSize: 25,
-                                fontWeight: FontWeight.w500,
-                              )),
-                        ),
-                        TextField(
-                          textCapitalization: TextCapitalization.sentences,
-                          controller: noteController,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            hintText: "Note Something Down",
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                              color: Colors.grey[400],
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ],
+                TextField(
+                  textCapitalization: TextCapitalization.sentences,
+                  controller: noteController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    hintText: "Note Something Down",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: Colors.grey[400],
+                      fontSize: 20,
                     ),
                   ),
                 ),
