@@ -33,10 +33,12 @@ class _TodoCardState extends State<TodoCard> {
                 });
               },
               icon: isTapped
-                  ? Icon(Icons.check_circle)
+                  ? Icon(
+                      Icons.check_circle,
+                    )
                   : Icon(Icons.circle_outlined),
             ),
-            SizedBox(width: 20),
+            SizedBox(width: 15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,7 +46,7 @@ class _TodoCardState extends State<TodoCard> {
                   widget.todo.event,
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 Text(
                   DateUtil.formatDate(widget.todo.date),
                   style: TextStyle(color: Colors.grey, fontSize: 12),

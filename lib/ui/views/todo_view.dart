@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:note_app/models/todo.dart';
 import 'package:note_app/ui/shared/search_bar.dart';
 import 'package:note_app/ui/shared/todo_bottom_sheet.dart';
 import 'package:note_app/ui/shared/todo_card.dart';
 import 'package:note_app/data/database_service.dart';
 import 'package:note_app/ui/shared/edit_bottom_sheet.dart';
+import 'package:note_app/ui/views/delete_todos_view.dart';
 
 class TodoView extends StatefulWidget {
   @override
@@ -27,7 +29,7 @@ class _TodoViewState extends State<TodoView> {
 
   void fetchTodos() async {
     DataBaseService dataBaseService = DataBaseService();
-    todos = await dataBaseService.fetchTodos();
+    unfilteredTodos = todos = await dataBaseService.fetchTodos();
 
     setState(() {});
   }
@@ -41,7 +43,9 @@ class _TodoViewState extends State<TodoView> {
         setState(() {
           fetchTodos();
         });
-      } else {}
+      } else {
+        filterTodo(searchTodoController.text);
+      }
     });
   }
 
@@ -72,6 +76,14 @@ class _TodoViewState extends State<TodoView> {
                 Expanded(
                   child: ListView.builder(
                     itemBuilder: (context, index) => GestureDetector(
+                      onLongPress: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => DeleteTodosView(
+                            todos: todos,
+                            index: index,
+                          ),
+                        ),
+                      ),
                       onTap: () async {
                         await showModalBottomSheet(
                             backgroundColor: Colors.transparent,
