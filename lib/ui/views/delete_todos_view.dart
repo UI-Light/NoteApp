@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/data/database_service.dart';
 import 'package:note_app/models/todo.dart';
 import 'package:note_app/ui/shared/delete_todo_card.dart';
 
@@ -15,7 +16,20 @@ class DeleteTodosView extends StatefulWidget {
 class _DeleteTodosViewState extends State<DeleteTodosView> {
   List<bool> checkedBoxStatus = [];
   bool isChecked = false;
-  int counter = 0;
+
+  void deleteTodo(String id) async {
+    DataBaseService dataBaseService = DataBaseService();
+    await dataBaseService.deleteTodo(id);
+  }
+
+  void onPressed() async {
+    for (var i = 0; i < checkedBoxStatus.length; i++) {
+      if (checkedBoxStatus[i]) {
+        deleteTodo(widget.todos[i].id);
+      }
+    }
+    Navigator.of(context).pop();
+  }
 
   int get selectedItemsCount =>
       checkedBoxStatus.where((status) => status == true).length;
@@ -88,13 +102,17 @@ class _DeleteTodosViewState extends State<DeleteTodosView> {
             itemCount: widget.todos.length,
           ),
         ),
-        bottomNavigationBar: Container(
-            child: IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.delete,
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.grey[200],
+          child: IconButton(
+            onPressed: () async {
+              onPressed();
+            },
+            icon: Icon(
+              Icons.delete_outline_sharp,
+            ),
           ),
-        )),
+        ),
       ),
     );
   }

@@ -93,4 +93,9 @@ class DataBaseService {
       "id": todo.id,
     });
   }
+
+  Future<void> deleteTodo(String id) async {
+    Database database = await createDatabase();
+    await database.delete(todoTable, where: "id = ?", whereArgs: [id]);
+  }
 }
