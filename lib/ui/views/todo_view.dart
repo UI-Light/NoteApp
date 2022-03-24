@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-
-import 'package:note_app/models/todo.dart';
 import 'package:note_app/ui/shared/search_bar.dart';
 import 'package:note_app/ui/shared/todo_bottom_sheet.dart';
 import 'package:note_app/ui/shared/todo_card.dart';
-import 'package:note_app/data/database_service.dart';
 import 'package:note_app/ui/shared/edit_bottom_sheet.dart';
 import 'package:note_app/ui/views/delete_todos_view.dart';
+import 'package:note_app/viewModels/todo_view_model.dart';
+import 'package:provider/provider.dart';
 
 class TodoView extends StatefulWidget {
   @override
@@ -14,8 +13,6 @@ class TodoView extends StatefulWidget {
 }
 
 class _TodoViewState extends State<TodoView> {
-  List<Todo> todos = [];
-  List<Todo> unfilteredTodos = [];
   TextEditingController searchTodoController = TextEditingController();
 
   void todoBottomSheet(context) {
@@ -27,24 +24,15 @@ class _TodoViewState extends State<TodoView> {
         });
   }
 
-  void fetchTodos() async {
-    DataBaseService dataBaseService = DataBaseService();
-    unfilteredTodos = todos = await dataBaseService.fetchTodos();
-
-    setState(() {});
-  }
-
   @override
   void initState() {
-    fetchTodos();
+    context.read<TodoViewModel>().fetchTodos();
     super.initState();
     searchTodoController.addListener(() {
       if (searchTodoController.text.isEmpty) {
-        setState(() {
-          fetchTodos();
-        });
+        context.read<TodoViewModel>().fetchTodos();
       } else {
-        filterTodo(searchTodoController.text);
+        context.read<TodoViewModel>().filterTodo(searchTodoController.text);
       }
     });
   }
@@ -79,7 +67,7 @@ class _TodoViewState extends State<TodoView> {
                       onLongPress: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => DeleteTodosView(
-                            todos: todos,
+                            todos: context.watch<TodoViewModel>().todos,
                             index: index,
                           ),
                         ),
@@ -90,16 +78,17 @@ class _TodoViewState extends State<TodoView> {
                             context: context,
                             builder: (context) {
                               return EditBottomSheet(
-                                todo: todos[index],
+                                todo:
+                                    context.watch<TodoViewModel>().todos[index],
                               );
                             });
-                        fetchTodos();
+                        context.read<TodoViewModel>().fetchTodos();
                       },
                       child: TodoCard(
-                        todo: todos[index],
+                        todo: context.watch<TodoViewModel>().todos[index],
                       ),
                     ),
-                    itemCount: todos.length,
+                    itemCount: context.watch<TodoViewModel>().todos.length,
                   ),
                 ),
               ],
@@ -117,16 +106,5 @@ class _TodoViewState extends State<TodoView> {
         backgroundColor: Colors.green,
       ),
     );
-  }
-
-  void filterTodo(String keyword) {
-    final searchTodos = unfilteredTodos.where((todo) {
-      final containsEvent =
-          todo.event.toLowerCase().contains(keyword.toLowerCase());
-      return containsEvent;
-    }).toList();
-    setState(() {
-      todos = searchTodos;
-    });
   }
 }

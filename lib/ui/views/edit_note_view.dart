@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/data/database_service.dart';
+
 import 'package:note_app/models/note.dart';
+import 'package:note_app/viewModels/note_view_model.dart';
+import 'package:provider/provider.dart';
 
 class EditNote extends StatefulWidget {
   final Note note;
@@ -14,25 +16,6 @@ class _EditNoteState extends State<EditNote> {
   late TextEditingController noteController;
 
   bool containsText = false;
-
-  void editNote() async {
-    DataBaseService dataBaseService = DataBaseService();
-    await dataBaseService.updateNote(
-      Note(
-        title: titleController.text,
-        body: noteController.text,
-        date: DateTime.now(),
-        id: widget.note.id,
-      ),
-    );
-    Navigator.of(context).pop();
-  }
-
-  void deleteNote() async {
-    DataBaseService dataBaseService = DataBaseService();
-    await dataBaseService.deleteNote(widget.note.id);
-    Navigator.of(context).pop();
-  }
 
   @override
   void initState() {
@@ -92,7 +75,11 @@ class _EditNoteState extends State<EditNote> {
             if (containsText)
               GestureDetector(
                 onTap: () {
-                  editNote();
+                  context.read<NoteViewModel>().editNote(
+                      title: titleController.text,
+                      body: noteController.text,
+                      id: widget.note.id);
+                  Navigator.of(context).pop();
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10.0),
@@ -145,7 +132,8 @@ class _EditNoteState extends State<EditNote> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            deleteNote();
+            context.read<NoteViewModel>().deleteNote(id: widget.note.id);
+            Navigator.of(context).pop();
           },
           child: Icon(
             Icons.delete,

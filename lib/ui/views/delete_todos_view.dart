@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/data/database_service.dart';
 import 'package:note_app/models/todo.dart';
 import 'package:note_app/ui/shared/delete_todo_card.dart';
+import 'package:note_app/viewModels/todo_view_model.dart';
+import 'package:provider/provider.dart';
 
 class DeleteTodosView extends StatefulWidget {
   final List<Todo> todos;
@@ -17,15 +18,10 @@ class _DeleteTodosViewState extends State<DeleteTodosView> {
   List<bool> checkedBoxStatus = [];
   bool isChecked = false;
 
-  void deleteTodo(String id) async {
-    DataBaseService dataBaseService = DataBaseService();
-    await dataBaseService.deleteTodo(id);
-  }
-
   void onPressed() async {
     for (var i = 0; i < checkedBoxStatus.length; i++) {
       if (checkedBoxStatus[i]) {
-        deleteTodo(widget.todos[i].id);
+        context.read<TodoViewModel>().deleteTodo(widget.todos[i].id);
       }
     }
     Navigator.of(context).pop();

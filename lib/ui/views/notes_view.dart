@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/data/database_service.dart';
-import 'package:note_app/models/note.dart';
 import 'package:note_app/ui/shared/note_card.dart';
 import 'package:note_app/ui/shared/search_bar.dart';
 import 'package:note_app/ui/views/edit_note_view.dart';
 import 'package:note_app/ui/views/new_note_view.dart';
+import 'package:note_app/viewModels/note_view_model.dart';
+import 'package:provider/provider.dart';
 
 class NoteView extends StatefulWidget {
   @override
@@ -12,30 +12,20 @@ class NoteView extends StatefulWidget {
 }
 
 class _NoteViewState extends State<NoteView> {
-  List<Note> notes = [];
-  List<Note> unfilteredNotes = [];
-
   TextEditingController searchNoteController = TextEditingController();
-
-  void fetchNotes() async {
-    DataBaseService dataBaseService = DataBaseService();
-    unfilteredNotes = notes = await dataBaseService.fetchNotes();
-    setState(() {});
-  }
 
   @override
   void initState() {
     super.initState();
     searchNoteController.addListener(() {
       if (searchNoteController.text.isEmpty) {
-        setState(() {
-          notes = unfilteredNotes;
-        });
+        context.read<NoteViewModel>().assignNotes();
       } else {
-        filterNotes(searchNoteController.text);
+        context.read<NoteViewModel>().filterNotes(searchNoteController.text);
       }
     });
-    Future.microtask(() => fetchNotes());
+
+    Future.microtask(() => context.read<NoteViewModel>().fetchNotes());
   }
 
   @override
@@ -62,24 +52,34 @@ class _NoteViewState extends State<NoteView> {
                     controller: searchNoteController, hintText: 'Search Notes'),
                 SizedBox(height: 20),
                 Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () async {
-                        await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => EditNote(
-                              note: notes[index],
+                  child: context.watch<NoteViewModel>().isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(Colors.green),
+                            backgroundColor: Colors.grey,
+                          ),
+                        )
+                      : ListView.builder(
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => EditNote(
+                                    note: context
+                                        .watch<NoteViewModel>()
+                                        .notes[index],
+                                  ),
+                                ),
+                              );
+                              context.read<NoteViewModel>().fetchNotes();
+                            },
+                            child: NoteCard(
+                              note: context.watch<NoteViewModel>().notes[index],
                             ),
                           ),
-                        );
-                        fetchNotes();
-                      },
-                      child: NoteCard(
-                        note: notes[index],
-                      ),
-                    ),
-                    itemCount: notes.length,
-                  ),
+                          itemCount:
+                              context.watch<NoteViewModel>().notes.length,
+                        ),
                 ),
               ],
             ),
@@ -87,10 +87,9 @@ class _NoteViewState extends State<NoteView> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
+        onPressed: () {
+          Navigator.push(
               context, MaterialPageRoute(builder: (context) => CreateNote()));
-          fetchNotes();
         },
         child: Icon(
           Icons.add,
@@ -98,18 +97,5 @@ class _NoteViewState extends State<NoteView> {
         backgroundColor: Colors.green,
       ),
     );
-  }
-
-  void filterNotes(String keyword) {
-    final searchNotes = unfilteredNotes.where((note) {
-      final containsTitle =
-          note.title.toLowerCase().contains(keyword.toLowerCase());
-      final containsBody =
-          note.body.toLowerCase().contains(keyword.toLowerCase());
-      return containsTitle || containsBody;
-    }).toList();
-    setState(() {
-      notes = searchNotes;
-    });
   }
 }

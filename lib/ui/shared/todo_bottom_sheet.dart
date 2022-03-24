@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import 'package:note_app/data/database_service.dart';
-import 'package:note_app/models/todo.dart';
+import 'package:note_app/viewModels/todo_view_model.dart';
+import 'package:provider/provider.dart';
 
 class TodoBottomSheet extends StatefulWidget {
   const TodoBottomSheet({Key? key}) : super(key: key);
@@ -12,16 +12,6 @@ class TodoBottomSheet extends StatefulWidget {
 class _TodoBottomSheetState extends State<TodoBottomSheet> {
   TextEditingController addEventController = TextEditingController();
   bool containsText = false;
-
-  void saveEvent() async {
-    DataBaseService dataBaseService = DataBaseService();
-    await dataBaseService.insertTodo(Todo(
-      event: addEventController.text,
-      date: DateTime.now(),
-      id: DateTime.now().toIso8601String(),
-    ));
-    Navigator.of(context).pop();
-  }
 
   @override
   void initState() {
@@ -107,7 +97,10 @@ class _TodoBottomSheetState extends State<TodoBottomSheet> {
                     ),
                     TextButton(
                       onPressed: () {
-                        saveEvent();
+                        context
+                            .read<TodoViewModel>()
+                            .saveEvent(event: addEventController.text);
+                        Navigator.of(context).pop();
                       },
                       child: Text(
                         'SAVE',

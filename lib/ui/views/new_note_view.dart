@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/data/database_service.dart';
-import 'package:note_app/models/note.dart';
+import 'package:note_app/viewModels/note_view_model.dart';
+import 'package:provider/provider.dart';
 
 class CreateNote extends StatefulWidget {
   @override
@@ -12,18 +12,6 @@ class _CreateNoteState extends State<CreateNote> {
   TextEditingController noteController = TextEditingController();
 
   bool containsText = false;
-  void insertNote() async {
-    DataBaseService dataBaseService = DataBaseService();
-    await dataBaseService.insertNote(
-      Note(
-        title: titleController.text,
-        body: noteController.text,
-        date: DateTime.now(),
-        id: DateTime.now().toIso8601String(),
-      ),
-    );
-    Navigator.of(context).pop();
-  }
 
   @override
   void initState() {
@@ -85,7 +73,9 @@ class _CreateNoteState extends State<CreateNote> {
                     if (containsText)
                       GestureDetector(
                         onTap: () {
-                          insertNote();
+                          context.read<NoteViewModel>().insertNote(
+                              titleController.text, noteController.text);
+                          Navigator.of(context).pop();
                         },
                         child: Icon(
                           Icons.check,

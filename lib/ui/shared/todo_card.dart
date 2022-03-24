@@ -44,6 +44,7 @@ class _TodoCardState extends State<TodoCard> {
               children: [
                 Text(
                   widget.todo.event,
+                  maxLines: 1,
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                 ),
                 SizedBox(height: 5),
