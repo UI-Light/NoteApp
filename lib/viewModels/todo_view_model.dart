@@ -7,6 +7,7 @@ class TodoViewModel extends ChangeNotifier {
   List<Todo> _todos = [];
   List<Todo> _unfilteredTodos = [];
   List<Todo> get todos => _todos;
+  bool _isLoading = false;
 
   void fetchTodos() async {
     DataBaseService dataBaseService = DataBaseService();

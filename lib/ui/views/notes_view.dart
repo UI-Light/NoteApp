@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/models/note.dart';
 import 'package:note_app/ui/shared/note_card.dart';
 import 'package:note_app/ui/shared/search_bar.dart';
 import 'package:note_app/ui/views/edit_note_view.dart';
@@ -30,6 +31,10 @@ class _NoteViewState extends State<NoteView> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.select<NoteViewModel, bool>(
+        (noteViewModel) => noteViewModel.isLoading);
+    final notes = context.select<NoteViewModel, List<Note>>(
+        (noteViewModel) => noteViewModel.notes);
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -52,34 +57,35 @@ class _NoteViewState extends State<NoteView> {
                     controller: searchNoteController, hintText: 'Search Notes'),
                 SizedBox(height: 20),
                 Expanded(
-                  child: context.watch<NoteViewModel>().isLoading
+                  child: isLoading
                       ? Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation(Colors.green),
                             backgroundColor: Colors.grey,
                           ),
                         )
-                      : ListView.builder(
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () async {
-                              await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => EditNote(
-                                    note: context
-                                        .watch<NoteViewModel>()
-                                        .notes[index],
-                                  ),
+                      : !isLoading &&
+                              notes
+                                  .isEmpty //context.watch<NoteViewModel>().notes.isEmpty
+                          ? Center(child: Text("No Note"))
+                          : ListView.builder(
+                              itemBuilder: (context, index) => GestureDetector(
+                                onTap: () async {
+                                  await Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => EditNote(
+                                        note: notes[index],
+                                      ),
+                                    ),
+                                  );
+                                  context.read<NoteViewModel>().fetchNotes();
+                                },
+                                child: NoteCard(
+                                  note: notes[index],
                                 ),
-                              );
-                              context.read<NoteViewModel>().fetchNotes();
-                            },
-                            child: NoteCard(
-                              note: context.watch<NoteViewModel>().notes[index],
+                              ),
+                              itemCount: notes.length,
                             ),
-                          ),
-                          itemCount:
-                              context.watch<NoteViewModel>().notes.length,
-                        ),
                 ),
               ],
             ),
