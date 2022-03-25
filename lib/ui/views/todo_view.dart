@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/models/todo.dart';
 import 'package:note_app/ui/shared/search_bar.dart';
 import 'package:note_app/ui/shared/todo_bottom_sheet.dart';
 import 'package:note_app/ui/shared/todo_card.dart';
@@ -39,6 +40,10 @@ class _TodoViewState extends State<TodoView> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.select<TodoViewModel, bool>(
+        ((todoViewModel) => todoViewModel.isLoading));
+    final todos = context.select<TodoViewModel, List<Todo>>(
+        ((todoViewModel) => todoViewModel.todos));
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -62,34 +67,43 @@ class _TodoViewState extends State<TodoView> {
                     hintText: 'Search to-dos'),
                 SizedBox(height: 20),
                 Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) => GestureDetector(
-                      onLongPress: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => DeleteTodosView(
-                            todos: context.watch<TodoViewModel>().todos,
-                            index: index,
+                  child: isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            //bool ? true:bool?true:false
+                            valueColor: AlwaysStoppedAnimation(Colors.green),
+                            backgroundColor: Colors.grey,
                           ),
-                        ),
-                      ),
-                      onTap: () async {
-                        await showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) {
-                              return EditBottomSheet(
-                                todo:
-                                    context.watch<TodoViewModel>().todos[index],
-                              );
-                            });
-                        context.read<TodoViewModel>().fetchTodos();
-                      },
-                      child: TodoCard(
-                        todo: context.watch<TodoViewModel>().todos[index],
-                      ),
-                    ),
-                    itemCount: context.watch<TodoViewModel>().todos.length,
-                  ),
+                        )
+                      : !isLoading && todos.isEmpty
+                          ? Center(child: Text("No Todo"))
+                          : ListView.builder(
+                              itemBuilder: (context, index) => GestureDetector(
+                                onLongPress: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => DeleteTodosView(
+                                      todos: todos,
+                                      index: index,
+                                    ),
+                                  ),
+                                ),
+                                onTap: () async {
+                                  await showModalBottomSheet(
+                                      backgroundColor: Colors.transparent,
+                                      context: context,
+                                      builder: (context) {
+                                        return EditBottomSheet(
+                                          todo: todos[index],
+                                        );
+                                      });
+                                  context.read<TodoViewModel>().fetchTodos();
+                                },
+                                child: TodoCard(
+                                  todo: todos[index],
+                                ),
+                              ),
+                              itemCount: todos.length,
+                            ),
                 ),
               ],
             ),

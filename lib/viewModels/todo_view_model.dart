@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/data/database_service.dart';
-
 import 'package:note_app/models/todo.dart';
 
 class TodoViewModel extends ChangeNotifier {
@@ -8,11 +7,18 @@ class TodoViewModel extends ChangeNotifier {
   List<Todo> _unfilteredTodos = [];
   List<Todo> get todos => _todos;
   bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  void setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 
   void fetchTodos() async {
+    setLoading(true);
     DataBaseService dataBaseService = DataBaseService();
     _unfilteredTodos = _todos = await dataBaseService.fetchTodos();
-    notifyListeners();
+    setLoading(false);
   }
 
   void saveEvent({required String event}) async {

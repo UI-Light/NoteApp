@@ -60,6 +60,7 @@ class _NoteViewState extends State<NoteView> {
                   child: isLoading
                       ? Center(
                           child: CircularProgressIndicator(
+                            //bool ? true:false
                             valueColor: AlwaysStoppedAnimation(Colors.green),
                             backgroundColor: Colors.grey,
                           ),
