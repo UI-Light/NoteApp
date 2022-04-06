@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/models/note.dart';
+import 'package:note_app/ui/routes/routes.dart';
 import 'package:note_app/ui/shared/note_card.dart';
 import 'package:note_app/ui/shared/search_bar.dart';
-import 'package:note_app/ui/views/edit_note_view.dart';
-import 'package:note_app/ui/views/new_note_view.dart';
 import 'package:note_app/viewModels/note_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -71,15 +70,17 @@ class _NoteViewState extends State<NoteView> {
                           ? Center(child: Text("No Note"))
                           : ListView.builder(
                               itemBuilder: (context, index) => GestureDetector(
-                                onTap: () async {
-                                  await Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => EditNote(
-                                        note: notes[index],
-                                      ),
-                                    ),
-                                  );
-                                  context.read<NoteViewModel>().fetchNotes();
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      Routes.editNoteRoute,
+                                      arguments: notes[index]);
+                                  //  Navigator.of(context).push(
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => EditNote(
+                                  //       note: notes[index],
+                                  //     ),
+                                  //   ),
+                                  // );
                                 },
                                 child: NoteCard(
                                   note: notes[index],
@@ -95,8 +96,9 @@ class _NoteViewState extends State<NoteView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CreateNote()));
+          Navigator.of(context).pushNamed(Routes.newNoteRoute);
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => CreateNote()));
         },
         child: Icon(
           Icons.add,

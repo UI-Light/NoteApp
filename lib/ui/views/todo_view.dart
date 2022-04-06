@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/models/todo.dart';
+import 'package:note_app/ui/routes/routes.dart';
 import 'package:note_app/ui/shared/search_bar.dart';
 import 'package:note_app/ui/shared/todo_bottom_sheet.dart';
 import 'package:note_app/ui/shared/todo_card.dart';
 import 'package:note_app/ui/shared/edit_bottom_sheet.dart';
-import 'package:note_app/ui/views/delete_todos_view.dart';
 import 'package:note_app/viewModels/todo_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -79,14 +79,19 @@ class _TodoViewState extends State<TodoView> {
                           ? Center(child: Text("No Todo"))
                           : ListView.builder(
                               itemBuilder: (context, index) => GestureDetector(
-                                onLongPress: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => DeleteTodosView(
-                                      todos: todos,
-                                      index: index,
-                                    ),
-                                  ),
-                                ),
+                                onLongPress: () {
+                                  Navigator.of(context).pushNamed(
+                                      Routes.deleteTodoRoute,
+                                      arguments: [todos, index]);
+                                  //   Navigator.of(context).push(
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => DeleteTodosView(
+                                  //       todos: todos,
+                                  //       index: index,
+                                  //     ),
+                                  //   ),
+                                  // );
+                                },
                                 onTap: () async {
                                   await showModalBottomSheet(
                                       backgroundColor: Colors.transparent,
