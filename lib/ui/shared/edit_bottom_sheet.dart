@@ -113,6 +113,7 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
               ],
             ),
           ),
