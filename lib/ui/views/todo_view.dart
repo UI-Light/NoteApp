@@ -27,7 +27,6 @@ class _TodoViewState extends State<TodoView> {
 
   @override
   void initState() {
-    context.read<TodoViewModel>().fetchTodos();
     super.initState();
     searchTodoController.addListener(() {
       if (searchTodoController.text.isEmpty) {
@@ -36,6 +35,8 @@ class _TodoViewState extends State<TodoView> {
         context.read<TodoViewModel>().filterTodo(searchTodoController.text);
       }
     });
+
+    Future.microtask(() => context.read<TodoViewModel>().fetchTodos());
   }
 
   @override
