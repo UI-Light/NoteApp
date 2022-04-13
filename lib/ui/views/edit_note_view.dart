@@ -48,98 +48,96 @@ class _EditNoteState extends State<EditNote> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-          title: Text(
-            "Notes",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+        title: Text(
+          "Notes",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
           ),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.green,
-              size: 30,
-            ),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.green,
+            size: 30,
           ),
-          actions: [
-            if (containsText)
-              GestureDetector(
-                onTap: () {
-                  context.read<NoteViewModel>().editNote(
-                      title: titleController.text,
-                      body: noteController.text,
-                      id: widget.note.id);
-                  Navigator.of(context).pop();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ),
+        ),
+        actions: [
+          if (containsText)
+            GestureDetector(
+              onTap: () {
+                context.read<NoteViewModel>().editNote(
+                    title: titleController.text,
+                    body: noteController.text,
+                    id: widget.note.id);
+                Navigator.of(context).pop();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: Icon(
+                  Icons.check,
+                  color: Colors.green,
                 ),
               ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.fromLTRB(21, 16.0, 21.0, 0.0),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: [
-                TextField(
-                  textCapitalization: TextCapitalization.sentences,
-                  controller: titleController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                      hintText: "Title",
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(
-                        color: Colors.grey[400],
-                        fontSize: 25,
-                        fontWeight: FontWeight.w500,
-                      )),
-                ),
-                TextField(
-                  textCapitalization: TextCapitalization.sentences,
-                  controller: noteController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    hintText: "Note Something Down",
+            ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.fromLTRB(21, 16.0, 21.0, 0.0),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              TextField(
+                textCapitalization: TextCapitalization.sentences,
+                controller: titleController,
+                keyboardType: TextInputType.multiline,
+                maxLines: 1,
+                decoration: InputDecoration(
+                    hintText: "Title",
                     border: InputBorder.none,
                     hintStyle: TextStyle(
                       color: Colors.grey[400],
-                      fontSize: 20,
-                    ),
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                    )),
+              ),
+              TextField(
+                textCapitalization: TextCapitalization.sentences,
+                controller: noteController,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: InputDecoration(
+                  hintText: "Note Something Down",
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 20,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            context.read<NoteViewModel>().deleteNote(id: widget.note.id);
-            Navigator.of(context).pop();
-          },
-          child: Icon(
-            Icons.delete,
-          ),
-          backgroundColor: Colors.green,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.read<NoteViewModel>().deleteNote(id: widget.note.id);
+          Navigator.of(context).pop();
+        },
+        child: Icon(
+          Icons.delete,
         ),
+        backgroundColor: Colors.green,
       ),
     );
   }

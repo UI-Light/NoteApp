@@ -47,66 +47,63 @@ class _DeleteTodosViewState extends State<DeleteTodosView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(
-              Icons.close,
-              color: Colors.green,
-            ),
-          ),
-          title: Text(
-            selectedItemsCount == 0
-                ? 'Please select items'
-                : '$selectedItemsCount selected items',
-            style:
-                TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
-          ),
-          actions: [
-            Checkbox(
-                activeColor: Colors.green,
-                value: isChecked,
-                onChanged: (value) {
-                  setState(() {
-                    isChecked = value!;
-                    if (isChecked) {
-                      checkedBoxStatus =
-                          List.generate(widget.todos.length, (index) => true);
-                    } else {
-                      checkedBoxStatus =
-                          List.generate(widget.todos.length, (index) => false);
-                    }
-                  });
-                })
-          ],
-        ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: ListView.builder(
-            itemBuilder: (context, index) => DeleteTodoCard(
-              todo: widget.todos[index],
-              isChecked: checkedBoxStatus[index],
-              onChanged: () {
-                checkBoxChildrenStatus(index);
-              },
-            ),
-            itemCount: widget.todos.length,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: Icon(
+            Icons.close,
+            color: Colors.green,
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.grey[200],
-          child: IconButton(
-            onPressed: () async {
-              onPressed();
+        title: Text(
+          selectedItemsCount == 0
+              ? 'Please select items'
+              : '$selectedItemsCount selected items',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+        ),
+        actions: [
+          Checkbox(
+              activeColor: Colors.green,
+              value: isChecked,
+              onChanged: (value) {
+                setState(() {
+                  isChecked = value!;
+                  if (isChecked) {
+                    checkedBoxStatus =
+                        List.generate(widget.todos.length, (index) => true);
+                  } else {
+                    checkedBoxStatus =
+                        List.generate(widget.todos.length, (index) => false);
+                  }
+                });
+              })
+        ],
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: ListView.builder(
+          itemBuilder: (context, index) => DeleteTodoCard(
+            todo: widget.todos[index],
+            isChecked: checkedBoxStatus[index],
+            onChanged: () {
+              checkBoxChildrenStatus(index);
             },
-            icon: Icon(
-              Icons.delete_outline_sharp,
-            ),
+          ),
+          itemCount: widget.todos.length,
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.grey[200],
+        child: IconButton(
+          onPressed: () async {
+            onPressed();
+          },
+          icon: Icon(
+            Icons.delete_outline_sharp,
           ),
         ),
       ),
