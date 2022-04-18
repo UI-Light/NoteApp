@@ -15,6 +15,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size);
     return Scaffold(
       body: PageView(
         physics: NeverScrollableScrollPhysics(),

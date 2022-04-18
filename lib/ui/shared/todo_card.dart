@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/models/todo.dart';
 import 'package:note_app/utils/date_util.dart';
+import 'package:note_app/utils/size_util.dart';
 
 class TodoCard extends StatefulWidget {
   final Todo todo;
@@ -16,7 +17,7 @@ class _TodoCardState extends State<TodoCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 10.h),
       height: MediaQuery.of(context).size.height / 10,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
@@ -38,19 +39,21 @@ class _TodoCardState extends State<TodoCard> {
                     )
                   : Icon(Icons.circle_outlined),
             ),
-            SizedBox(width: 15),
+            SizedBox(width: 15.w),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   widget.todo.event,
                   maxLines: 1,
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                  style:
+                      TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 5.h),
                 Text(
                   DateUtil.formatDate(widget.todo.date),
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                 )
               ],
             ),

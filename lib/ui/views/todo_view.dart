@@ -6,7 +6,7 @@ import 'package:note_app/ui/shared/todo_bottom_sheet.dart';
 import 'package:note_app/ui/shared/todo_card.dart';
 import 'package:note_app/ui/shared/edit_bottom_sheet.dart';
 import 'package:note_app/utils/size_util.dart';
-import 'package:note_app/viewModels/todo_view_model.dart';
+import 'package:note_app/ui/viewModels/todo_view_model.dart';
 import 'package:provider/provider.dart';
 
 class TodoView extends StatefulWidget {

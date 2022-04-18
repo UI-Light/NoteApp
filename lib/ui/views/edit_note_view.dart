@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:note_app/utils/size_util.dart';
 import 'package:note_app/models/note.dart';
-import 'package:note_app/viewModels/note_view_model.dart';
+import 'package:note_app/ui/viewModels/note_view_model.dart';
 import 'package:provider/provider.dart';
 
 class EditNote extends StatefulWidget {
@@ -56,7 +56,7 @@ class _EditNoteState extends State<EditNote> {
           "Notes",
           style: TextStyle(
             color: Colors.black,
-            fontSize: 17,
+            fontSize: 17.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -81,7 +81,7 @@ class _EditNoteState extends State<EditNote> {
                 Navigator.of(context).pop();
               },
               child: Padding(
-                padding: const EdgeInsets.only(right: 10.0),
+                padding: EdgeInsets.only(right: 10.w),
                 child: Icon(
                   Icons.check,
                   color: Colors.green,
@@ -92,7 +92,7 @@ class _EditNoteState extends State<EditNote> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.fromLTRB(21, 16.0, 21.0, 0.0),
+          padding: EdgeInsets.fromLTRB(21.w, 16.h, 21.w, 0.0),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(
@@ -107,7 +107,7 @@ class _EditNoteState extends State<EditNote> {
                     border: InputBorder.none,
                     hintStyle: TextStyle(
                       color: Colors.grey[400],
-                      fontSize: 25,
+                      fontSize: 25.sp,
                       fontWeight: FontWeight.w500,
                     )),
               ),
@@ -121,7 +121,7 @@ class _EditNoteState extends State<EditNote> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(
                     color: Colors.grey[400],
-                    fontSize: 20,
+                    fontSize: 20.sp,
                   ),
                 ),
               ),

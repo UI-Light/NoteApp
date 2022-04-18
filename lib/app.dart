@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/ui/routes/routes_generator.dart';
 import 'package:note_app/utils/size_util.dart';
-import 'package:note_app/viewModels/note_view_model.dart';
-import 'package:note_app/viewModels/todo_view_model.dart';
+import 'package:note_app/ui/viewModels/note_view_model.dart';
+import 'package:note_app/ui/viewModels/todo_view_model.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
@@ -10,7 +10,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeUtil.init(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<NoteViewModel>(
@@ -21,6 +20,10 @@ class App extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        builder: (context, child) {
+          SizeUtil.init(context);
+          return child!;
+        },
         debugShowCheckedModeBanner: false,
         //home: Home(),
         theme: ThemeData(),

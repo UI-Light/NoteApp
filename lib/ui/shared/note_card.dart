@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/models/note.dart';
 import 'package:note_app/utils/date_util.dart';
+import 'package:note_app/utils/size_util.dart';
 
 class NoteCard extends StatelessWidget {
   final Note note;
@@ -16,28 +17,28 @@ class NoteCard extends StatelessWidget {
         color: Colors.grey[200],
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 8.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               note.title,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: 5.h),
             Text(
               note.body,
               maxLines: 1,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: Colors.grey[700],
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Text(
               DateUtil.formatDate(note.date),
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 12.sp,
                 color: Colors.grey,
               ),
             ),

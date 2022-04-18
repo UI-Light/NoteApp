@@ -3,8 +3,9 @@ import 'package:note_app/models/note.dart';
 import 'package:note_app/ui/routes/routes.dart';
 import 'package:note_app/ui/shared/note_card.dart';
 import 'package:note_app/ui/shared/search_bar.dart';
-import 'package:note_app/viewModels/note_view_model.dart';
+import 'package:note_app/ui/viewModels/note_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:note_app/utils/size_util.dart';
 
 class NoteView extends StatefulWidget {
   @override
@@ -38,7 +39,12 @@ class _NoteViewState extends State<NoteView> {
       body: SafeArea(
         child: Container(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 70, 20, 0),
+            padding: EdgeInsets.fromLTRB(
+              20.w,
+              70.h,
+              20.w,
+              0,
+            ),
             child: Column(
               children: <Widget>[
                 Container(
@@ -46,15 +52,15 @@ class _NoteViewState extends State<NoteView> {
                   child: Text(
                     'Notes',
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 30.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 SearchBar(
                     controller: searchNoteController, hintText: 'Search Notes'),
-                SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 Expanded(
                   child: isLoading
                       ? Center(

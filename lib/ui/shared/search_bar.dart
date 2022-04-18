@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/utils/size_util.dart';
 
 class SearchBar extends StatelessWidget {
   final TextEditingController controller;
@@ -9,7 +10,7 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: 40.h,
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: Colors.grey[200],

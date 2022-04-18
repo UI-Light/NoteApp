@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/viewModels/note_view_model.dart';
+import 'package:note_app/ui/viewModels/note_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:note_app/utils/size_util.dart';
 
 class CreateNote extends StatefulWidget {
   @override
@@ -65,7 +66,7 @@ class _CreateNoteState extends State<CreateNote> {
                       "Notes",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 17,
+                        fontSize: 17.sp,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -87,7 +88,7 @@ class _CreateNoteState extends State<CreateNote> {
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(21, 16.0, 8.0, 0.0),
+                  padding: EdgeInsets.fromLTRB(21.w, 16.h, 8.w, 0),
                   child: Column(
                     children: <Widget>[
                       TextField(
@@ -100,7 +101,7 @@ class _CreateNoteState extends State<CreateNote> {
                             border: InputBorder.none,
                             hintStyle: TextStyle(
                               color: Colors.grey[400],
-                              fontSize: 25,
+                              fontSize: 25.sp,
                               fontWeight: FontWeight.w500,
                             )),
                       ),
@@ -115,7 +116,7 @@ class _CreateNoteState extends State<CreateNote> {
                             border: InputBorder.none,
                             hintStyle: TextStyle(
                               color: Colors.grey[400],
-                              fontSize: 20,
+                              fontSize: 20.sp,
                             ),
                           ),
                         ),

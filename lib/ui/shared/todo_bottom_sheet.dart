@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
-import 'package:note_app/viewModels/todo_view_model.dart';
+import 'package:note_app/ui/viewModels/todo_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:note_app/utils/size_util.dart';
 
 class TodoBottomSheet extends StatefulWidget {
   const TodoBottomSheet({Key? key}) : super(key: key);
@@ -48,9 +49,9 @@ class _TodoBottomSheetState extends State<TodoBottomSheet> {
             child: Column(
               children: [
                 Container(
-                  margin:
-                      EdgeInsets.only(left: 15, right: 15, top: 20, bottom: 5),
-                  height: 40,
+                  margin: EdgeInsets.only(
+                      left: 15.w, right: 15.w, top: 20.h, bottom: 5.h),
+                  height: 40.h,
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
@@ -60,7 +61,7 @@ class _TodoBottomSheetState extends State<TodoBottomSheet> {
                     controller: addEventController,
                     decoration: InputDecoration(
                       hintText: 'Add a to-do item',
-                      hintStyle: TextStyle(color: Colors.grey, fontSize: 13),
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 13.sp),
                       border: InputBorder.none,
                     ),
                   ),
@@ -71,8 +72,8 @@ class _TodoBottomSheetState extends State<TodoBottomSheet> {
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 10.h),
                         padding: EdgeInsets.all(3),
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
@@ -85,11 +86,11 @@ class _TodoBottomSheetState extends State<TodoBottomSheet> {
                               color: Colors.grey,
                               size: 20,
                             ),
-                            SizedBox(width: 6),
+                            SizedBox(width: 6.w),
                             Text(
                               'Set alerts',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 11),
+                              style: TextStyle(
+                                  color: Colors.grey, fontSize: 11.sp),
                             ),
                           ],
                         ),
@@ -106,12 +107,12 @@ class _TodoBottomSheetState extends State<TodoBottomSheet> {
                         'SAVE',
                         style: TextStyle(
                             color: containsText ? Colors.green : Colors.grey,
-                            fontSize: 14),
+                            fontSize: 14.sp),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 20.h),
               ],
             ),
           ),
