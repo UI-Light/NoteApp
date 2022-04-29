@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/data/database_service.dart';
-import 'package:note_app/models/todo.dart';
+import 'package:note_app/data/repository/todos_repository.dart';
+import 'package:note_app/domain/models/todo.dart';
+import 'package:note_app/domain/todo_domain.dart';
 
 class TodoViewModel extends ChangeNotifier {
+  TodoViewModel() {
+    init();
+  }
+
   List<Todo> _todos = [];
   List<Todo> _unfilteredTodos = [];
   List<Todo> get todos => _todos;
@@ -14,41 +19,6 @@ class TodoViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchTodos() async {
-    setLoading(true);
-    DataBaseService dataBaseService = DataBaseService();
-    _unfilteredTodos = _todos = await dataBaseService.fetchTodos();
-    setLoading(false);
-  }
-
-  void saveEvent({required String event}) async {
-    DataBaseService dataBaseService = DataBaseService();
-    await dataBaseService.insertTodo(Todo(
-      event: event,
-      date: DateTime.now(),
-      id: DateTime.now().toIso8601String(),
-    ));
-    fetchTodos();
-  }
-
-  void editTodo({required String event, required String id}) async {
-    DataBaseService dataBaseService = DataBaseService();
-    await dataBaseService.updateTodo(
-      Todo(
-        event: event,
-        date: DateTime.now(),
-        id: id,
-      ),
-    );
-    fetchTodos();
-  }
-
-  void deleteTodo(String id) async {
-    DataBaseService dataBaseService = DataBaseService();
-    await dataBaseService.deleteTodo(id);
-    fetchTodos();
-  }
-
   void filterTodo(String keyword) {
     final searchTodos = _unfilteredTodos.where((todo) {
       final containsEvent =
@@ -57,5 +27,36 @@ class TodoViewModel extends ChangeNotifier {
     }).toList();
     _todos = searchTodos;
     notifyListeners();
+  }
+
+  //Depend on the domain relevant to the viewmodel
+  final todoDomain = TodoDomain(TodoRepositoryImpl());
+
+  //Expose a getter that retrieves the required data from the domain
+  ValueNotifier<List<Todo>> get todo => todoDomain.todos;
+
+  void init() {
+    todoDomain.todos.addListener(() {
+      _todos = _unfilteredTodos = todoDomain.todos.value;
+      notifyListeners();
+    });
+  }
+
+  void fetchTodos() async {
+    setLoading(true);
+    await todoDomain.fetchTodos();
+    setLoading(false);
+  }
+
+  void saveEvent({required String event}) {
+    todoDomain.saveEvent(event: event);
+  }
+
+  void editTodo({required String event, required String id}) {
+    todoDomain.editTodo(event: event, id: id);
+  }
+
+  void deleteTodo(String id) {
+    todoDomain.deleteTodo(id);
   }
 }

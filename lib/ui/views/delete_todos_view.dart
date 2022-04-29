@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/models/todo.dart';
+import 'package:note_app/domain/models/todo.dart';
 import 'package:note_app/ui/shared/delete_todo_card.dart';
 import 'package:note_app/ui/viewModels/todo_view_model.dart';
 import 'package:provider/provider.dart';

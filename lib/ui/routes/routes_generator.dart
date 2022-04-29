@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/models/note.dart';
+import 'package:note_app/domain/models/note.dart';
 import 'package:note_app/ui/routes/routes.dart';
 import 'package:note_app/ui/views/delete_todos_view.dart';
 import 'package:note_app/ui/views/edit_note_view.dart';

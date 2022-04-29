@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/utils/size_util.dart';
-import 'package:note_app/models/note.dart';
+import 'package:note_app/domain/models/note.dart';
 import 'package:note_app/ui/viewModels/note_view_model.dart';
 import 'package:provider/provider.dart';
 

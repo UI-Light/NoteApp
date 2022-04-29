@@ -1,5 +1,5 @@
-import 'package:note_app/models/note.dart';
-import 'package:note_app/models/todo.dart';
+import 'package:note_app/domain/models/note.dart';
+import 'package:note_app/domain/models/todo.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
