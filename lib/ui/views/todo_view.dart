@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/domain/models/todo.dart';
 import 'package:note_app/ui/routes/routes.dart';
-import 'package:note_app/ui/shared/search_bar.dart';
+import 'package:note_app/ui/shared/search_box.dart';
 import 'package:note_app/ui/shared/todo_bottom_sheet.dart';
 import 'package:note_app/ui/shared/todo_card.dart';
 import 'package:note_app/ui/shared/edit_bottom_sheet.dart';
@@ -73,7 +73,7 @@ class _TodoViewState extends State<TodoView> {
                 ),
               ),
               SizedBox(height: 20.h),
-              SearchBar(
+              SearchBox(
                   controller: searchTodoController, hintText: 'Search to-dos'),
               SizedBox(height: 20.h),
               Expanded(

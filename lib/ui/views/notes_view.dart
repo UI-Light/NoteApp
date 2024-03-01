@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:note_app/domain/models/note.dart';
 import 'package:note_app/ui/routes/routes.dart';
 import 'package:note_app/ui/shared/note_card.dart';
-import 'package:note_app/ui/shared/search_bar.dart';
+import 'package:note_app/ui/shared/search_box.dart';
 import 'package:note_app/ui/viewModels/note_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:note_app/utils/size_util.dart';
@@ -58,7 +58,7 @@ class _NoteViewState extends State<NoteView> {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                SearchBar(
+                SearchBox(
                     controller: searchNoteController, hintText: 'Search Notes'),
                 SizedBox(height: 20.h),
                 Expanded(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/utils/size_util.dart';
 
-class SearchBar extends StatelessWidget {
+class SearchBox extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
-  const SearchBar({Key? key, required this.controller, required this.hintText})
+  const SearchBox({Key? key, required this.controller, required this.hintText})
       : super(key: key);
 
   @override
