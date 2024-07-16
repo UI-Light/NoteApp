@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' ;
 import 'package:note_app/ui/routes/routes_generator.dart';
 import 'package:note_app/utils/size_util.dart';
 import 'package:note_app/ui/viewModels/note_view_model.dart';
